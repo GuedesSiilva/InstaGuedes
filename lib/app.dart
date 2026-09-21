@@ -8,7 +8,7 @@ class InstagramApp extends StatelessWidget {
     Widget build(BuildContext context){
       return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'InstaAula',
+          title: 'InstaGuedes Flutter',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(
               seedColor: Colors.pink,
@@ -18,4 +18,4 @@ class InstagramApp extends StatelessWidget {
           home: const HomePage(),
       );
     } 
-} 
+}
