@@ -14,7 +14,7 @@ class FeedPage  extends StatelessWidget{
             floating: true,
             backgroundColor: Colors.white,
             title: const Text(
-              'InstaAula',
+              'InstaGuedes',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 28,
