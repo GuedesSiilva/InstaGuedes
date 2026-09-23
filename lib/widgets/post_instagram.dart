@@ -130,7 +130,7 @@ class _PostInstagramState extends State<PostInstagram>{
               )
             ),
           ),
-          const Padding(
+          Padding(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
             child: Text(
               'Ver todos os comentários', 

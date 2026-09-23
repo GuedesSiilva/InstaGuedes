@@ -5,18 +5,17 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:instagram_flutter/app.dart';
 
 void main() {
-  testWidgets('Instagram-like feed shows the main mockup elements', (WidgetTester tester) async {
+  testWidgets('A tela de login exibe os elementos principais', (WidgetTester tester) async {
     await tester.pumpWidget(const InstagramApp());
-  
-    expect(find.text('InstaAula'), findsOneWidget);
-    expect(find.text('Seu story'), findsOneWidget);
-    expect(find.text('129 curtidas'), findsOneWidget);
-    expect(find.text('professor.mobile'), findsOneWidget);
+
+    expect(find.text('InstaGuedes'), findsOneWidget);
+    expect(find.text('Entre na sua conta'), findsOneWidget);
+    expect(find.text('Entrar'), findsOneWidget);
+    expect(find.text('Cadastre-se'), findsOneWidget);
   });
 }

@@ -1,104 +1,142 @@
 import 'package:flutter/material.dart';
 
-class PerfilPage extends StatelessWidget {
+import '../utils/usuario_service.dart';
+import 'editar_perfil_page.dart';
+import 'login_page.dart';
+
+class PerfilPage extends StatefulWidget {
   const PerfilPage({super.key});
 
   @override
+  State<PerfilPage> createState() => _PerfilPageState();
+}
+
+class _PerfilPageState extends State<PerfilPage> {
+  void editarPerfil() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const EditarPerfilPage(),
+      ),
+    );
+
+    setState(() {});
+  }
+
+  void sair() {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: const Text('Sair'),
+          content: const Text(
+            'Deseja realmente sair da sua conta?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+              },
+              child: const Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Logout realizado com sucesso!'),
+                  ),
+                );
+
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const LoginPage(),
+                  ),
+                  (route) => false,
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Sair'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final usuario = UsuarioService.usuario;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-
         body: CustomScrollView(
           slivers: [
-
-            // =========================
-            // CABEÇALHO
-            // =========================
-
             SliverAppBar(
               backgroundColor: Colors.white,
               surfaceTintColor: Colors.white,
               elevation: 0,
-
-              title: const Text(
-                'guedes',
-                style: TextStyle(
+              title: Text(
+                '@${usuario?.usuario ?? 'usuario'}',
+                style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                 ),
               ),
-
               actions: [
-
                 IconButton(
-                  onPressed: () {},
-
+                  onPressed: editarPerfil,
                   icon: const Icon(
-                    Icons.add_box_outlined,
+                    Icons.edit_outlined,
                     color: Colors.black,
                   ),
                 ),
-
                 IconButton(
-                  onPressed: () {},
-
+                  onPressed: sair,
                   icon: const Icon(
-                    Icons.menu,
+                    Icons.logout,
                     color: Colors.black,
                   ),
                 ),
               ],
             ),
 
-            // =========================
-            // PERFIL
-            // =========================
-
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.all(16),
-
                 child: Column(
                   children: [
-
                     Row(
                       children: [
-
-                        // FOTO
-                        const CircleAvatar(
-                          radius: 42,
-
-                          backgroundColor: Colors.blue,
-
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.white,
-                            size: 45,
+                        CircleAvatar(
+                          radius: 45,
+                          backgroundImage: const AssetImage(
+                            'assets/images/perfil.png',
                           ),
                         ),
 
                         const SizedBox(width: 25),
 
-                        // ESTATÍSTICAS
                         Expanded(
                           child: Row(
                             mainAxisAlignment:
                                 MainAxisAlignment.spaceAround,
-
                             children: const [
-
                               ProfileInfo(
                                 numero: '12',
                                 texto: 'Publicações',
                               ),
-
                               ProfileInfo(
                                 numero: '356',
                                 texto: 'Seguidores',
                               ),
-
                               ProfileInfo(
                                 numero: '420',
                                 texto: 'Seguindo',
@@ -111,13 +149,11 @@ class PerfilPage extends StatelessWidget {
 
                     const SizedBox(height: 15),
 
-                    // NOME
-                    const Align(
+                    Align(
                       alignment: Alignment.centerLeft,
-
                       child: Text(
-                        'Guedes Silva',
-                        style: TextStyle(
+                        usuario?.nome ?? 'Usuário',
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
                         ),
@@ -126,12 +162,12 @@ class PerfilPage extends StatelessWidget {
 
                     const SizedBox(height: 3),
 
-                    const Align(
+                    Align(
                       alignment: Alignment.centerLeft,
-
                       child: Text(
-                        'Desenvolvedor de Software 💻',
-                        style: TextStyle(
+                        usuario?.biografia ??
+                            'Desenvolvedor de Software 💻',
+                        style: const TextStyle(
                           fontSize: 14,
                         ),
                       ),
@@ -139,13 +175,10 @@ class PerfilPage extends StatelessWidget {
 
                     const SizedBox(height: 12),
 
-                    // BOTÃO EDITAR
                     SizedBox(
                       width: double.infinity,
-
                       child: OutlinedButton(
-                        onPressed: () {},
-
+                        onPressed: editarPerfil,
                         child: const Text(
                           'Editar perfil',
                           style: TextStyle(
@@ -159,27 +192,15 @@ class PerfilPage extends StatelessWidget {
               ),
             ),
 
-            // =========================
-            // ABAS
-            // =========================
-
             const SliverToBoxAdapter(
-              child: Divider(
-                height: 1,
-              ),
+              child: Divider(height: 1),
             ),
-
-            // =========================
-            // PUBLICAÇÕES
-            // =========================
 
             SliverGrid(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
-
                   return Container(
                     color: Colors.blue,
-
                     child: const Center(
                       child: Icon(
                         Icons.flutter_dash,
@@ -189,10 +210,8 @@ class PerfilPage extends StatelessWidget {
                     ),
                   );
                 },
-
                 childCount: 12,
               ),
-
               gridDelegate:
                   const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
@@ -207,13 +226,7 @@ class PerfilPage extends StatelessWidget {
   }
 }
 
-
-// ======================================================
-// INFORMAÇÕES DO PERFIL
-// ======================================================
-
 class ProfileInfo extends StatelessWidget {
-
   final String numero;
   final String texto;
 
@@ -225,24 +238,18 @@ class ProfileInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       children: [
-
         Text(
           numero,
-
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
         ),
-
         const SizedBox(height: 3),
-
         Text(
           texto,
-
           style: const TextStyle(
             fontSize: 12,
             color: Colors.grey,
